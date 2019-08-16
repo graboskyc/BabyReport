@@ -20,7 +20,7 @@
 
             <StackPanel Grid.Column="0" Background="#51BF08" Width="400">
                 <Button Content="Fed" Name="btn_fed" Click="btn_fed_Click" Width="300" HorizontalAlignment="Center" Margin="40" FontSize="64"></Button>
-                <Button Content="Fed" Name="btn_pee" Click="btn_pee_Click" Width="300" HorizontalAlignment="Center" Margin="40" FontSize="64"></Button>
+                <Button Content="Pee" Name="btn_pee" Click="btn_pee_Click" Width="300" HorizontalAlignment="Center" Margin="40" FontSize="64"></Button>
                 <Button Content="Poo" Name="btn_poo" Click="btn_poo_Click" Width="300" HorizontalAlignment="Center" Margin="40" FontSize="64"></Button>
             </StackPanel>
 
