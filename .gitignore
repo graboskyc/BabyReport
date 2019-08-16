@@ -1,3 +1,7 @@
 
 .DS_Store
 secrets.txt
+PiUWP/BabyReport/.vs
+Thumbs.db
+PiUWP/BabyReport/BabyReport/bin
+PiUWP/BabyReport/BabyReport/obj

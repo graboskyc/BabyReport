@@ -8,7 +8,26 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
 
+            <StackPanel Grid.Column="0" Background="#51BF08" Width="400">
+                <Button Content="Fed" Name="btn_fed" Click="btn_fed_Click" Width="300" HorizontalAlignment="Center" Margin="40" FontSize="64"></Button>
+                <Button Content="Fed" Name="btn_pee" Click="btn_pee_Click" Width="300" HorizontalAlignment="Center" Margin="40" FontSize="64"></Button>
+                <Button Content="Poo" Name="btn_poo" Click="btn_poo_Click" Width="300" HorizontalAlignment="Center" Margin="40" FontSize="64"></Button>
+            </StackPanel>
+
+        </Grid>
+
+
+        <WebView x:Name="view_web" Grid.Column="1" NavigationCompleted="view_web_NavigationCompleted" Source="ms-appx-web:///Embedable.html"></WebView>
+        
     </Grid>
 </Page>
