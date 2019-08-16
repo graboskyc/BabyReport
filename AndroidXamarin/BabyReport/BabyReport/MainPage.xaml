@@ -21,5 +21,18 @@
          </Grid>
 
         <WebView x:Name="view_web" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></WebView>
+        
+        <StackLayout x:Name="stk_milk" IsVisible="false">
+            <Label Text="How much milk?"></Label>
+            <Entry x:Name="txt_milk" />
+            <Button Text="Save" x:Name="btn_saveMilk" Clicked="btnSaveMilk_Clicked"/>
+        </StackLayout>
+        
+        <StackLayout x:Name="stk_form" IsVisible="false">
+            <Label Text="How much formula?"></Label>
+            <Entry x:Name="txt_form" />
+             <Button Text="Save" x:Name="btn_saveForm" Clicked="btnSaveFormula_Clicked"/>
+        </StackLayout>
+        
     </StackLayout>
 </ContentPage>
