@@ -1,0 +1,8 @@
+{
+    "app_id": "babyreport-euuhd",
+    "config_version": 20180301,
+    "name": "babyreport",
+    "location": "US-VA",
+    "deployment_model": "GLOBAL",
+    "security": {}
+}

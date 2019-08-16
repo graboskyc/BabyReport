@@ -1,0 +1,21 @@
+{
+    "id": "5d55f55042074add09420033",
+    "database": "babyreport",
+    "collection": "events",
+    "roles": [
+        {
+            "name": "default",
+            "apply_when": {},
+            "insert": true,
+            "delete": true,
+            "additional_fields": {}
+        }
+    ],
+    "schema": {
+        "properties": {
+            "_id": {
+                "bsonType": "objectId"
+            }
+        }
+    }
+}

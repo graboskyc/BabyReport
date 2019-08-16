@@ -1,0 +1,13 @@
+{
+    "id": "5d55f5b07d96b9c2d5c243d9",
+    "name": "newEvent",
+    "run_as_authed_user": false,
+    "run_as_user_id": "",
+    "run_as_user_id_script_source": "",
+    "options": {
+        "httpMethod": "POST",
+        "secret": "asd",
+        "validationMethod": "SECRET_AS_QUERY_PARAM"
+    },
+    "respond_result": true
+}
