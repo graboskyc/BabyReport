@@ -1,0 +1,19 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BabyReport.Android", "BabyReport.Android\BabyReport.Android.csproj", "{FDAFCEA8-A4B1-4DF3-BC65-80B6837D2A1D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BabyReport", "BabyReport\BabyReport.shproj", "{9419D2FB-C78C-4DBE-B188-9532302ADBF3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDAFCEA8-A4B1-4DF3-BC65-80B6837D2A1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDAFCEA8-A4B1-4DF3-BC65-80B6837D2A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDAFCEA8-A4B1-4DF3-BC65-80B6837D2A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDAFCEA8-A4B1-4DF3-BC65-80B6837D2A1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

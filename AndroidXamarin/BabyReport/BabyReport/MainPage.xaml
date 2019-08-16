@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:BabyReport" x:Class="BabyReport.MainPage">
+    <StackLayout>
+        <StackLayout Orientation="Horizontal" FlowDirection="LeftToRight" BackgroundColor="#51BF08" x:Name="stk_nav">
+            <Label TextColor="White" Text="Baby Report"></Label>
+            <Image x:Name="btn_ref" WidthRequest="32" MinimumWidthRequest="32" HeightRequest="32" MinimumHeightRequest="32" Source="@drawable/mb_refresh"></Image>
+            <Image x:Name="btn_poo" WidthRequest="32" MinimumWidthRequest="32" HeightRequest="32" MinimumHeightRequest="32" Source="@drawable/mb_poo"></Image>
+            <Image x:Name="btn_pee" WidthRequest="32" MinimumWidthRequest="32" HeightRequest="32" MinimumHeightRequest="32" Source="@drawable/mb_pee"></Image>
+            <Image x:Name="btn_form" WidthRequest="32" MinimumWidthRequest="32" HeightRequest="32" MinimumHeightRequest="32" Source="@drawable/mb_formula"></Image>
+            <Image x:Name="btn_milk" WidthRequest="32" MinimumWidthRequest="32" HeightRequest="32" MinimumHeightRequest="32" Source="@drawable/mb_milk"></Image>
+        </StackLayout>
+        <WebView x:Name="view_web" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></WebView>
+    </StackLayout>
+</ContentPage>
