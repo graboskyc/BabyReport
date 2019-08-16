@@ -7,8 +7,6 @@ using Xamarin.Forms;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
-using System.Text;
 
 namespace BabyReport
 {
@@ -21,7 +19,7 @@ namespace BabyReport
 
             view_web.Source = AppConstants.chartsEmbed;
 
-            btn_ref.GestureRecognizers.Add(new TapGestureRecognizer((arg1, arg2) => view_web.Source = (view_web.Source as UrlWebViewSource).Url ));
+            txt_title.GestureRecognizers.Add(new TapGestureRecognizer((arg1, arg2) => view_web.Source = (view_web.Source as UrlWebViewSource).Url ));
             btn_poo.GestureRecognizers.Add(new TapGestureRecognizer(btn_poo_Click));
             btn_pee.GestureRecognizers.Add(new TapGestureRecognizer(btn_pee_Click));
             btn_form.GestureRecognizers.Add(new TapGestureRecognizer(btn_fed_Click));
