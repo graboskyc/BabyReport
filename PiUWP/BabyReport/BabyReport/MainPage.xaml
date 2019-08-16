@@ -27,7 +27,7 @@
         </Grid>
 
 
-        <WebView x:Name="view_web" Grid.Column="1" NavigationCompleted="view_web_NavigationCompleted" Source="ms-appx-web:///Embedable.html"></WebView>
+        <WebView x:Name="view_web" Grid.Column="1"></WebView>
         
     </Grid>
 </Page>

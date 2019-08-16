@@ -26,6 +26,7 @@ namespace BabyReport
         public MainPage()
         {
             this.InitializeComponent();
+            view_web.Source = new Uri(AppConstants.chartsEmbed);
         }
 
         private async void view_web_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
