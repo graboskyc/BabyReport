@@ -13,23 +13,30 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Text;
 using Windows.UI.ViewManagement;
 using Windows.UI;
+using Windows.Devices.Gpio;
+using System.Diagnostics;
 
 namespace BabyReport
 {
     public sealed partial class MainPage : Page
     {
-        DispatcherTimer _disTimer;
+        DispatcherTimer _refTimer;
+        DispatcherTimer _debounceTimer;
+        bool _canPress= true;
+
+        GpioController _gpio = null;
+        WebRequestHandler _wrh;
 
         public MainPage()
         {
             this.InitializeComponent();
+
+            _wrh = new WebRequestHandler();
 
             var view = ApplicationView.GetForCurrentView();
 
@@ -43,17 +50,81 @@ namespace BabyReport
 
             view_web.Source = new Uri(AppConstants.chartsEmbed);
 
-            _disTimer = new DispatcherTimer();
-            _disTimer.Tick += _disTimer_Tick;
-            _disTimer.Interval = new TimeSpan(0, 0, AppConstants.refreshSecDelay);
-            _disTimer.Start();
+            _refTimer = new DispatcherTimer();
+            _refTimer.Tick += _refTimer_Tick;
+            _refTimer.Interval = new TimeSpan(0, 0, AppConstants.refreshSecDelay);
+            _refTimer.Start();
+
+            _gpio = GpioController.GetDefault();
+
+            if (_gpio != null)
+            {
+                GpioPin hotPin = _gpio.OpenPin(AppConstants.pinAlwaysOn);
+
+                hotPin.Write(GpioPinValue.High);
+                hotPin.SetDriveMode(GpioPinDriveMode.Output);
+                hotPin.Write(GpioPinValue.High);
+
+                foreach(int i in AppConstants.pinList)
+                {
+                    try
+                    {
+                        GpioController gc = GpioController.GetDefault();
+                        GpioPin pin = gc.OpenPin(i);
+                        pin.Write(GpioPinValue.Low);
+                        pin.SetDriveMode(GpioPinDriveMode.Input);
+                        pin.DebounceTimeout = TimeSpan.FromMilliseconds(500);
+                        pin.ValueChanged += asyncGenericPinValueChanged;
+                    } catch (Exception ex)
+                    {
+                        Debug.WriteLine("Pin " + i.ToString() + " not supported");
+                    }
+                }
+
+            }
         }
 
-        private void _disTimer_Tick(object sender, object e)
+        private async void asyncGenericPinValueChanged(GpioPin sender, GpioPinValueChangedEventArgs args)
+        {
+            Debug.WriteLine(sender.PinNumber.ToString() + " " + sender.Read().ToString());
+
+            if (args.Edge == GpioPinEdge.RisingEdge)
+            {
+                int index = Array.IndexOf(AppConstants.pinList, sender.PinNumber);
+                Newtonsoft.Json.Linq.JObject jobj = new Newtonsoft.Json.Linq.JObject();
+
+                switch (index)
+                {
+                    case 0:
+                        jobj.Add("eventType", "diaper");
+                        jobj.Add("eventSubType", "pee");
+                        await _wrh.MakeRequest(jobj);
+                        break;
+                    case 1:
+                        jobj.Add("eventType", "diaper");
+                        jobj.Add("eventSubType", "poo");
+                        await _wrh.MakeRequest(jobj);
+                        break;
+                    case 2:
+                        jobj.Add("eventType", "bottle");
+                        jobj.Add("eventSubType", "milk");
+                        await _wrh.MakeRequest(jobj);
+                        break;
+                    case 3:
+                        jobj.Add("eventType", "bottle");
+                        jobj.Add("eventSubType", "formula");
+                        await _wrh.MakeRequest(jobj);   
+                        break;
+                }
+            }
+
+        }
+
+        private void _refTimer_Tick(object sender, object e)
         {
             view_web.Refresh();
-            _disTimer.Interval = new TimeSpan(0, 0, AppConstants.refreshSecDelay);
-            _disTimer.Start();
+            _refTimer.Interval = new TimeSpan(0, 0, AppConstants.refreshSecDelay);
+            _refTimer.Start();
             view_web.Refresh();
         }
 
@@ -62,31 +133,13 @@ namespace BabyReport
             await view_web.InvokeScriptAsync("setBody", new string[] { AppConstants.chartsEmbed });
         }
 
-        private async Task MakeRequest(Newtonsoft.Json.Linq.JObject jobj)
-        {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(AppConstants.newEventEndpoint);
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            string url = "newEvent?secret=" + AppConstants.eventEndpointSecret;
-
-            StringContent sc = new StringContent(jobj.ToString(), Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync(url, sc);
-
-            response.EnsureSuccessStatusCode();
-
-            string r = await response.Content.ReadAsStringAsync();
-            view_web.Refresh();
-        }
-
         private async void btn_fed_Click(object sender, RoutedEventArgs e)
         {
             Newtonsoft.Json.Linq.JObject jobj = new Newtonsoft.Json.Linq.JObject();
             jobj.Add("eventType", "bottle");
             jobj.Add("eventSubType", "formula");
-            await MakeRequest(jobj);
+            await _wrh.MakeRequest(jobj);
+            view_web.Refresh();
         }
 
         private async void btn_poo_Click(object sender, RoutedEventArgs e)
@@ -94,7 +147,8 @@ namespace BabyReport
             Newtonsoft.Json.Linq.JObject jobj = new Newtonsoft.Json.Linq.JObject();
             jobj.Add("eventType", "diaper");
             jobj.Add("eventSubType", "poo");
-            await MakeRequest(jobj);
+            await _wrh.MakeRequest(jobj);
+            view_web.Refresh();
         }
 
         private async void btn_pee_Click(object sender, RoutedEventArgs e)
@@ -102,7 +156,8 @@ namespace BabyReport
             Newtonsoft.Json.Linq.JObject jobj = new Newtonsoft.Json.Linq.JObject();
             jobj.Add("eventType", "diaper");
             jobj.Add("eventSubType", "pee");
-            await MakeRequest(jobj);
+            await _wrh.MakeRequest(jobj);
+            view_web.Refresh();
         }
 
         private async void btn_milk_Click(object sender, RoutedEventArgs e)
@@ -110,7 +165,8 @@ namespace BabyReport
             Newtonsoft.Json.Linq.JObject jobj = new Newtonsoft.Json.Linq.JObject();
             jobj.Add("eventType", "bottle");
             jobj.Add("eventSubType", "milk");
-            await MakeRequest(jobj);
+            await _wrh.MakeRequest(jobj);
+            view_web.Refresh();
         }
     }
 }
