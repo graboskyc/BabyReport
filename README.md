@@ -7,10 +7,14 @@
 * [MongoDB Charts to report on data visually](Charts/README.md)
 
 # Configuration
+GPIO pinout can be found [here](https://pinout.xyz/)
+
 The C# projects each have a `AppConstants.cs` file which is omitted here due to security for the strings. The format should be:
 
 ```
-namespace BabyReport
+using System.Collections.Generic;
+
+    namespace BabyReport
 {
     public static class AppConstants
     {
@@ -18,6 +22,11 @@ namespace BabyReport
         public static string eventEndpointSecret = "";
         public static string chartsEmbed = "";
         public static int refreshSecDelay = 90;
+
+        // pin to push 3.3v gpio pin out
+        public static int pinAlwaysOn = 5;
+        // pee, poo, milk, formula gpio input pins
+        public static int[] pinList = new int[] { 6, 13, 19, 26 };
     }
 }
 ```
